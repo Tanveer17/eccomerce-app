@@ -1,0 +1,87 @@
+{% extends parent_template|default:"product/base_product.html" %}
+{% load static %}
+{% load my_filters %}
+
+{% block title %}
+Shop
+{% endblock %}
+
+{% block navbar %}
+
+ <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li ><a href="{% url 'home' %}">Home</a></li>
+                        <li class="active"><a href="{% url 'shop_items_page' page_number=1 %}">Shop page</a></li>
+                        <li><a href="{% url 'show_cart' %}">Cart</a></li>
+			<li><a href="{% url 'checkout'  %}">Checkout</a></li>
+                        </ul>
+                </div>
+
+{% endblock %}		
+
+{% block content %}
+<div class="product-big-title-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="product-bit-title text-center">
+                        <h2>Shop</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+        
+    
+    
+    <div class="single-product-area">
+        <div class="zigzag-bottom"></div>
+        <div class="container">
+            <div class="row">
+		{% for product in products %}	    
+                <div class="col-md-3 col-sm-6">
+                    <div class="single-shop-product">
+                        <div class="product-upper">
+				<img src="{% static 'img/'|add:product.pic %}"  style="width:195px;height:243px;" alt="">
+                        </div>
+			<h2><a href="{% url 'single_product' product.slug %}" >{{product.name|title|add:' '|add:product.model|title}}</a></h2>
+                        <div class="product-carousel-price">
+				<ins>${{product.price}}</ins> <del>$999.00</del>
+                        </div>  
+                        
+                        <div class="product-option-shop">
+				<a class="add_to_cart_button" data-quantity="1" data-product_sku="" data-product_id="70" rel="nofollow" href="{% url 'add_to_cart' %}?slug={{product.slug}}&quantity=1">Add to cart</a>
+			</div>                       
+                    </div>
+                </div>
+		{% endfor %}
+              </div>
+            
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="product-pagination text-center">
+                        <nav>
+                          <ul class="pagination">
+                            <li>
+				    <a href="{{ request.get_full_path|replace_prev }}" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                              </a>
+                            </li>
+			    {% for i in number_of_pages|times %}
+			    <li><a href="/shop/{{i}}">{{i}}</a></li>
+			    {% endfor %}
+                            <li>
+				    <a href="{{ request.get_full_path|replace_next:number_of_pages }}" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                              </a>
+                            </li>
+                          </ul>
+                        </nav>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+	</div>
+    {% endblock %}
